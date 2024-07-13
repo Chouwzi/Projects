@@ -4,7 +4,8 @@
 #include "ttt_func.hpp"
 
 int main() {
-  int plr_input, plr_id;
+  unsigned int plr_input;
+  int plr_id;
   char plr_char;
   bool endgame = false;
   std::vector<char> data = create_array();
@@ -19,14 +20,13 @@ int main() {
     while (true) {
       std::cout << "> Player " << plr_char << ": ";
       std::cin >> plr_input;
-      if (plr_input == 26) {
-        endgame = true;
-        break;
-      } else if (plr_input >= 0 && plr_input <= 8) {
-        data[plr_input] = plr_char;
-        break;
-      } else if (data[plr_input] == '_')  {
-        std::cout << "Choose another index!\n";
+      if (plr_input >= 0 && plr_input <= 8) {
+        if (data[plr_input] == '_') {
+          std::cout << "Choose another index!\n";
+        } else {
+          data[plr_input] = plr_char;
+          break;
+        }
       } else {
         std::cout << "Only accept number 0-8!\n";
       }
