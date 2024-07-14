@@ -92,7 +92,7 @@ class Footwork():
         else:
             print('Practice mode not found (random, data)')
         print('Footwork practice done.')
-        delete_files_in_directory(r"temp")  # Xóa các tệp tạm sau khi thực hành
+        delete_files_in_directory(r"voice_temp")  # Xóa các tệp tạm sau khi thực hành
     
     # Dừng chế độ ngẫu nhiên
     def stop_random_mode(self):

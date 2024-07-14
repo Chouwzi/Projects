@@ -8,9 +8,9 @@ def speech(text: str, voice: bool):
     if voice: 
         output = gTTS(text=text, lang='en', slow=False)
         id = randint(1000000, 9999999)
-        output.save(f"temp\\voice{id}.mp3")
+        output.save(f"voice_temp\\voice{id}.mp3")
         playsound.playsound(f"temp\\voice{id}.mp3")
-        os.remove(f"temp\\voice{id}.mp3")
+        os.remove(f"voice_temp\\voice{id}.mp3")
 
 
 def delete_files_in_directory(directory):
