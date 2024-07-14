@@ -6,7 +6,7 @@ from random import randint
 
 def speech(text: str, voice: bool):
     if voice: 
-        output = gTTS(text=text, lang='vi', slow=False)
+        output = gTTS(text=text, lang='en', slow=False)
         id = randint(1000000, 9999999)
         output.save(f"temp\\voice{id}.mp3")
         playsound.playsound(f"temp\\voice{id}.mp3")

@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from coreai import Footwork
+from core import Footwork
 from PIL import ImageTk, Image
 import threading
 
@@ -11,12 +11,12 @@ app = ctk.CTk()
 app.geometry("1080x680")
 app.resizable(False, False)
 app.iconbitmap(r"imgs\icon.ico")
-app.title('Chouwzi BAF')
+app.title("Chouwzi BAF")
 
 # Lớp Setting quản lý các thiết lập
 class Setting():
     def __init__(self, mode, data, interval, voice, repeat):
-        self.modes = ['random', 'data']
+        self.modes = ["Random", "Manual"]
         self.mode = mode
         self.data = data
         self.interval = interval
@@ -25,22 +25,22 @@ class Setting():
     # Cập nhật chế độ
     def up_mode(self, value):
         self.mode = value
-        if value == 'data':
-            repeat_label.configure(text_color='#50F7A3')
+        if value == "Manual":
+            repeat_label.configure(text_color="#50F7A3")
             repeat_check.place(x=125, y=170)
-            data_label.configure(text_color='#50F7A3')
+            data_label.configure(text_color="#50F7A3")
             data_entry.place(x=125, y=130)
         else:
             repeat_check.place(x=9999, y =9999)
             data_entry.place(x=9999, y =9999)
-            data_label.configure(text_color='#212121')
-            repeat_label.configure(text_color='#212121')
+            data_label.configure(text_color="#212121")
+            repeat_label.configure(text_color="#212121")
             
     # Cập nhật dữ liệu
     def up_data(self):
-        if self.mode == "data":
+        if self.mode == "Manual":
             
-            data_split = data_entry.get().split(',')
+            data_split = data_entry.get().split(",")
             self.data = [int(x) for x in data_split]
             
             
@@ -57,7 +57,7 @@ class Setting():
         self.repeat = repeat_var.get()
     
 # Khởi tạo đối tượng Setting với các thiết lập mặc định
-setting = Setting('random', '', 3, True, False)
+setting = Setting("Random", "", 3, True, False)
 side_panel_width = 250
 
 # Lớp Start quản lý việc bắt đầu và dừng chương trình
@@ -71,8 +71,8 @@ class Start(Setting):
     # Tạo nút bắt đầu
     def create(self):
         self.button = ctk.CTkButton(master=app, 
-                        text="Bắt đầu",
-                        font=("Helvetica", 22, 'bold'),
+                        text="Start",
+                        font=("Helvetica", 22, "bold"),
                         width=side_panel_width,
                         height=65,
                         fg_color="#50F7A3",
@@ -91,17 +91,17 @@ class Start(Setting):
         self.fw.data = setting.data
         self.fw.voice = setting.voice
         self.fw.repeat = setting.repeat
-        print(f'--Settings--\nMode: {setting.mode}\nData: {setting.data}\nInterval: {setting.interval}\nVoice: {setting.voice}\nStart: {self.start}')
-        if setting.mode == 'random':
+        print(f"--Settings--\nMode: {setting.mode}\nData: {setting.data}\nInterval: {setting.interval}\nVoice: {setting.voice}\nStart: {self.start}")
+        if setting.mode == "Random":
             if not self.start:
-                self.button.configure(text="Dừng lại")
+                self.button.configure(text="Stop")
                 self.fw.practice(points, self)
             else:
-                self.button.configure(text="Bắt đầu") 
+                self.button.configure(text="Start") 
                 threading.Thread(target=self.fw.stop_random_mode, args=()).start()
-        elif setting.mode == 'data':
+        elif setting.mode == "Manual":
             if not self.start:
-                self.button.configure(text="Dừng lại")
+                self.button.configure(text="Stop")
                 self.fw.practice(points, self)
                 
         self.start = not self.start
@@ -120,7 +120,7 @@ class Point():
     def create(self):
         self.point = ctk.CTkButton(master=app, 
                         text= self.text,
-                        font=("Helvetica", 22, 'bold'),
+                        font=("Helvetica", 22, "bold"),
                         width=50,
                         height=50,
                         fg_color="white",
@@ -134,17 +134,17 @@ class Point():
     # Đánh dấu điểm
     def highlight(self, boolean):
         if boolean:
-            self.point.configure(fg_color='#00E3FF')
+            self.point.configure(fg_color="#00E3FF")
         elif self.disabled:
-            self.point.configure(fg_color="#FF2B00", hover_color="#FF6242", text='X')
+            self.point.configure(fg_color="#FF2B00", hover_color="#FF6242", text="X")
         else:
             self.point.configure(fg_color="white", hover_color="#DCDCDC", text=self.text)
             
     # Xử lý sự kiện khi bấm vào điểm
     def onclick(self):
-        if setting.mode == 'random':
+        if setting.mode == "Random":
             if not self.disabled:
-                self.point.configure(fg_color="#FF2B00", hover_color="#FF6242", text='X')
+                self.point.configure(fg_color="#FF2B00", hover_color="#FF6242", text="X")
             else:
                 self.point.configure(fg_color="white", hover_color="#DCDCDC", text=self.text)
             self.disabled = not self.disabled
@@ -182,35 +182,35 @@ custom_frame = ctk.CTkFrame(app,
                             )
 custom_frame.place(relx=1, rely=0, anchor=ctk.NE, x=-10, y=10) 
 
-mode_label = ctk.CTkLabel(custom_frame, text='Chế độ', text_color='#50F7A3', font=("Helvetica", 15, 'bold'))
+mode_label = ctk.CTkLabel(custom_frame, text="Mode", text_color="#50F7A3", font=("Helvetica", 15, "bold"))
 mode_label.place(x=10, y=10)
 mode_combobox = ctk.CTkComboBox(custom_frame, values=setting.modes, width=116, command=setting.up_mode)
 mode_combobox.place(x=125, y=10)
 
-interval_label = ctk.CTkLabel(custom_frame, text='Khoảng dừng', text_color='#50F7A3', font=("Helvetica", 15, 'bold'))
+interval_label = ctk.CTkLabel(custom_frame, text="Interval", text_color="#50F7A3", font=("Helvetica", 15, "bold"))
 interval_label.place(x=10, y=50)
-interval_entry = ctk.CTkEntry(custom_frame, placeholder_text='3', width=116)
+interval_entry = ctk.CTkEntry(custom_frame, placeholder_text="3", width=116)
 interval_entry.place(x=125, y=50)
 interval_entry.insert(0, str(setting.interval))
 
-voice_label = ctk.CTkLabel(custom_frame, text='Giọng nói', text_color='#50F7A3', font=("Helvetica", 15, 'bold'))
+voice_label = ctk.CTkLabel(custom_frame, text="Voice", text_color="#50F7A3", font=("Helvetica", 15, "bold"))
 voice_label.place(x=10, y=90)
 voice_var = ctk.BooleanVar(custom_frame, True)
-voice_check = ctk.CTkCheckBox(custom_frame, variable=voice_var, onvalue=True, text='', checkmark_color='black', fg_color='#50F7A3', command=setting.up_voice)
+voice_check = ctk.CTkCheckBox(custom_frame, variable=voice_var, onvalue=True, text="", checkmark_color="black", fg_color="#50F7A3", command=setting.up_voice)
 voice_check.place(x=125, y=90)
 
-data_label = ctk.CTkLabel(custom_frame, text='Bước', text_color='#212121', font=("Helvetica", 15, 'bold'))
+data_label = ctk.CTkLabel(custom_frame, text="Sequence", text_color="#212121", font=("Helvetica", 15, "bold"))
 data_label.place(x=10, y=130)
-data_entry = ctk.CTkEntry(custom_frame, placeholder_text='VD: 1,3,5,2,4,8', width=116)
+data_entry = ctk.CTkEntry(custom_frame, placeholder_text="VD: 1,3,5,2,4,8", width=116)
 data_entry.place(x=9999, y=9999)
 
-repeat_label = ctk.CTkLabel(custom_frame, text='Lặp lại', text_color='#212121', font=("Helvetica", 15, 'bold'))
+repeat_label = ctk.CTkLabel(custom_frame, text="Repeat", text_color="#212121", font=("Helvetica", 15, "bold"))
 repeat_label.place(x=10, y=170)
 repeat_var = ctk.BooleanVar(custom_frame, False)
-repeat_check = ctk.CTkCheckBox(custom_frame, variable=repeat_var, onvalue=True, text='', checkmark_color='black', fg_color='#50F7A3', command=setting.up_repeat)
+repeat_check = ctk.CTkCheckBox(custom_frame, variable=repeat_var, onvalue=True, text="", checkmark_color="black", fg_color="#50F7A3", command=setting.up_repeat)
 repeat_check.place(x=9999, y=9999)
 
-copyright_label = ctk.CTkLabel(app, text="© 2024 BAF. All rights reserved.", text_color='white', font=("Helvetica", 13))
+copyright_label = ctk.CTkLabel(app, text="© 2024 BAF. All rights reserved.", text_color="white", font=("Helvetica", 13))
 copyright_label.place(relx=0.99, rely=0.99, anchor=ctk.E, y=-10)
 # Khởi tạo và hiển thị nút bắt đầu
 start_btn = Start()
