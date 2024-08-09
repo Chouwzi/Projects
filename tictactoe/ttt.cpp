@@ -21,7 +21,7 @@ int main() {
       std::cout << "> Player " << plr_char << ": ";
       std::cin >> plr_input;
       if (plr_input >= 0 && plr_input <= 8) {
-        if (data[plr_input] == '_') {
+        if (data[plr_input] != '_') {
           std::cout << "Choose another index!\n";
         } else {
           data[plr_input] = plr_char;
